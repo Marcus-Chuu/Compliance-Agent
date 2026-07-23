@@ -1,5 +1,6 @@
 package com.nbcb.assistagent.app;
 
+import com.nbcb.assistagent.advisor.MyLoggerAdvisor;
 import com.nbcb.assistagent.chatMemory.FileBaseChatMemory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -34,6 +35,7 @@ public class AssistantApp {
                 .prompt()
                 .user(userMessage)
                 .advisors(spec -> spec.param(CONVERSATION_ID, chatId))
+                .advisors(new MyLoggerAdvisor())
                 .call()
                 .chatResponse();
         assert chatResponse != null;

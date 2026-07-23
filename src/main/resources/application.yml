@@ -9,8 +9,40 @@ spring:
       chat:
         options:
           model: qwen-plus # 对话模型名称
-
+      embedding:
+        options:
+          model: text-embedding-v4
+          dimensions: 1536
   datasource:
     url: jdbc:postgresql://127.0.0.1:5432/assist_agent
     username: assist_agent
     password: assist_agent
+
+assist:
+  rag:
+    indexing:
+      enabled: true
+      # 要扫描的知识库资源
+      resource-pattern: classpath:document/*.md
+      # 用于隔离不同知识库的数据
+      collection: assist-documents
+      # 修改该值会在下次启动时强制重建全部文档索引
+      index-version: v1
+      # 纳入索引签名；模型或维度变化时会自动重建索引
+      embedding-model: ${spring.ai.dashscope.embedding.options.model}
+      embedding-dimensions: ${spring.ai.dashscope.embedding.options.dimensions}
+      # DashScope Embedding API 单次最多处理 10 条文本
+      embedding-batch-size: 10
+    chunking:
+      # 先按 Markdown 条款标题切分
+      strategy: markdown-article
+      # 单个条款超过 500 Token 时再次切分
+      max-tokens: 500
+      # 拆分时尽量保证片段不少于 100 字符
+      min-chunk-size-chars: 100
+      # 少于 20 字符的无意义片段不入库
+      min-chunk-length-to-embed: 20
+      # 防止异常文件产生大量切片
+      max-num-chunks: 100
+      # 保留换行和列表结构
+      keep-separator: true

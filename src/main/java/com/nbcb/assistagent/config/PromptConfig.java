@@ -12,7 +12,7 @@ public class PromptConfig {
 
     @Bean
     public String complianceSystemPrompt() {
-        ClassPathResource resource = new ClassPathResource("system-prompt.txt");
+        ClassPathResource resource = new ClassPathResource("prompt/system-prompt.txt");
         try {
             return resource.getContentAsString(StandardCharsets.UTF_8);
         }

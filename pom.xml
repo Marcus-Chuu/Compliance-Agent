@@ -68,7 +68,6 @@
             <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
         </dependency>
 
-
         <!-- ======================== 数据库 ======================= -->
 
         <!-- Spring JDBC：提供 JdbcTemplate 和数据库连接池 -->
@@ -83,10 +82,10 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Spring AI PGvector 向量存储 -->
+        <!-- Spring AI PGvector 向量存储（代码中手动配置，避免自动创建第二个 VectorStore） -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
+            <artifactId>spring-ai-pgvector-store</artifactId>
         </dependency>
 
         <!-- ==================== 工具依赖 ==================== -->
