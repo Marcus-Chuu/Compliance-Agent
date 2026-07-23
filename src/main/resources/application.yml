@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: AssistAgent
+  profiles:
+      active: local
+  ai:
+    dashscope:
+      api-key: xxx # 阿里云百炼 API Key
+      chat:
+        options:
+          model: qwen-plus # 对话模型名称
+
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/assist_agent
+    username: assist_agent
+    password: assist_agent
