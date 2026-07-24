@@ -51,13 +51,15 @@ public class MyLoggerAdvisor implements CallAdvisor, StreamAdvisor {
      * @param request 请求
      */
     private void before(ChatClientRequest request) {
-        log.info("AI Request : {}", request.prompt().getUserMessage().getText());
+        String userText = request.prompt().getUserMessage().getText();
+        log.info("AI request started: inputLength={}", userText == null ? 0 : userText.length());
     }
 
 
     private void observeAfter(ChatClientResponse response) {
         if (response.chatResponse() != null) {
-            log.info("AI Response : {}", response.chatResponse().getResult().getOutput().getText());
+            String outputText = response.chatResponse().getResult().getOutput().getText();
+            log.info("AI response chunk received: outputLength={}", outputText == null ? 0 : outputText.length());
         }
     }
 

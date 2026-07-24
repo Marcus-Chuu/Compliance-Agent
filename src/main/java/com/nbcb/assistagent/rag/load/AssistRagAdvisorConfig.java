@@ -1,6 +1,5 @@
 package com.nbcb.assistagent.rag.load;
 
-import com.nbcb.assistagent.rag.load.AssistContextualQueryAugmenterFactoty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
@@ -28,7 +27,7 @@ public class AssistRagAdvisorConfig {
 
         return RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(retriever)
-                .queryAugmenter(AssistContextualQueryAugmenterFactoty.createInstance())
+                .queryAugmenter(AssistContextualQueryAugmenterFactory.createInstance())
                 .build();
     }
 

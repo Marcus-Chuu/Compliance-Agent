@@ -23,7 +23,7 @@ class AssistDocumentLoaderTests {
 
         assertThat(firstLoad).hasSize(5);
         assertThat(firstLoad.stream().mapToInt(source -> source.documents().size()).sum())
-                .isEqualTo(83);
+                .isEqualTo(85);
         assertThat(firstLoad.stream().map(LoadedDocumentSource::checksum))
                 .allSatisfy(checksum -> assertThat(checksum).hasSize(64));
 
@@ -54,6 +54,25 @@ class AssistDocumentLoaderTests {
                 .containsEntry("status", "现行")
                 .containsEntry("source", "04_贷款风险分类认定标准.md")
                 .containsEntry("collection", "assist-documents");
+
+        Document entryArticle = findArticle(firstDocuments, "CREDIT-POLICY-001", "第四条");
+        assertThat(entryArticle.getText())
+                .contains("持续经营满两年")
+                .contains("纳税状态正常")
+                .contains("不存在当前逾期")
+                .contains("资产负债率不高于 70%");
+
+        Document loanCalculationArticle = findArticle(firstDocuments, "COMPLIANCE-MANUAL-005", "第十八条");
+        assertThat(loanCalculationArticle.getText())
+                .contains("等额本息")
+                .contains("500,000 元")
+                .contains("14,761.99 元")
+                .contains("31,431.73 元");
+
+        Document promptInjectionArticle = findArticle(firstDocuments, "COMPLIANCE-MANUAL-005", "第十九条");
+        assertThat(promptInjectionArticle.getText())
+                .contains("ignore previous instructions")
+                .contains("应在进入模型推理、知识库检索或工具调用前予以拦截");
     }
 
     @Test
@@ -104,5 +123,13 @@ class AssistDocumentLoaderTests {
                 new PathMatchingResourcePatternResolver(),
                 splitter,
                 indexingProperties);
+    }
+
+    private Document findArticle(List<Document> documents, String docId, String articleNumber) {
+        return documents.stream()
+                .filter(document -> docId.equals(document.getMetadata().get("doc_id")))
+                .filter(document -> articleNumber.equals(document.getMetadata().get("articleNumber")))
+                .findFirst()
+                .orElseThrow();
     }
 }
